@@ -4,8 +4,8 @@ const bcrypt = require("bcrypt");
 
 
 
-const pageerror = async (re,req) => {
-    res.render("admin-error")
+const pageerror = async (req,res) => {
+    res.render("admin/admin-error")
 }
 
 
@@ -16,7 +16,7 @@ const loadLogin = (req,res)=>{
     if(req.session.admin){
         return res.redirect("/admin/dashboard")
     }
-    res.render("admin-login",{message:null})
+    res.render("admin/admin-login",{message:null})
 }
 
 
@@ -55,7 +55,7 @@ const login = async (req,res) => {
 const loadDashboard = async (req,res) => {
     if(req.session.admin){
         try {
-            res.render("dashboard")
+            res.render("admin/dashboard")
         } catch (error) {
 
             res.redirect("/pageerror")
@@ -63,6 +63,26 @@ const loadDashboard = async (req,res) => {
         }
     }
 }
+
+
+
+const logout = async (req,res) => {
+    try {
+
+        req.session.destroy(err=>{
+            if(err){
+                console.log("Error destroying session",err);
+                return res.redirect("/pageerror")
+            }
+            res.redirect("/admin/login")
+        })
+        
+    } catch (error) {
+        console.log("Unexpected error during logout",error);
+        res.redirect("/pageerror")
+    }
+}
+
 
 
 
@@ -74,5 +94,6 @@ module.exports = {
     loadLogin,
     login,
     loadDashboard,
-    pageerror,       
+    pageerror,
+    logout       
 }

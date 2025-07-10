@@ -1,0 +1,130 @@
+/* Reset some basic styles */
+body, h1, h2, h3, h4, h5, h6, p, ul, ol {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f6fa;
+    color: #333;
+}
+
+/* Header */
+.admin-header {
+    background-color: #2c3e50;
+    color: #fff;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-header .logo {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.admin-header .admin-nav a {
+    color: #fff;
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.admin-header .admin-nav a:hover {
+    text-decoration: underline;
+}
+
+/* Sidebar */
+.admin-sidebar {
+    width: 220px;
+    height: 100vh;
+    background-color: #34495e;
+    padding-top: 30px;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.admin-sidebar ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.admin-sidebar ul li {
+    padding: 12px 20px;
+}
+
+.admin-sidebar ul li a {
+    color: #ecf0f1;
+    text-decoration: none;
+    display: block;
+}
+
+.admin-sidebar ul li a:hover {
+    background-color: #3b5998;
+    border-radius: 4px;
+}
+
+/* Main content */
+.admin-main {
+    margin-left: 220px;
+    padding: 40px 30px;
+}
+
+/* Error Page Styling */
+.error-container {
+    max-width: 500px;
+    margin: 150px auto;
+    background-color: #fff;
+    padding: 40px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.error-container h1 {
+    color: #e74c3c;
+    margin-bottom: 20px;
+}
+
+.error-container p {
+    color: #555;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.error-container button,
+.error-container a.btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.error-container button:hover,
+.error-container a.btn:hover {
+    background-color: #b30000;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .admin-sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .admin-main {
+        margin-left: 0;
+        padding: 20px;
+    }
+}

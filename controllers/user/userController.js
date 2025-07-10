@@ -9,7 +9,7 @@ const pageNotFound = async (req,res) => {
 
     try {
 
-        res.render("page-404")
+        res.render("user/page-404")
         
     } catch (error) {
 
@@ -24,7 +24,7 @@ const pageNotFound = async (req,res) => {
 const loadSignup = async (req,res) => {
     try {
 
-        res.render("signup")
+        res.render("user/signup")
         
     } catch (error) {
 
@@ -66,10 +66,10 @@ const  loadHomepage = async (req,res)=>{
         if(user){
 
             const userData = await User.findOne({_id:user._id});
-            res.render("home",{user:userData})
+            res.render("user/home",{user:userData})
 
         }else{
-            return res.render("home");
+            return res.render("user/home");
         }
         
         
@@ -130,7 +130,7 @@ const signup = async (req,res) => {
 
         const findUser = await User.findOne({email});
         if(findUser){
-            return res.render("signup",{message:"User with this email already exists"});
+            return res.render("user/signup",{message:"User with this email already exists"});
         }
 
         const otp = generateOtp();
@@ -144,7 +144,7 @@ const signup = async (req,res) => {
         req.session.userOtp = otp;
         req.session.userData = {name,phone,email,password};
 
-        res.render("verify-otp");   
+        res.render("user/verify-otp");   
         console.log("OTP Sent",otp);
         
     } catch (error) {
@@ -241,7 +241,7 @@ const loadLogin = async (req,res) => {
     try {
 
         if(!req.session.user){
-            return res.render("login")
+            return res.render("user/login")
         }else{
             res.redirect("/")
         }
@@ -267,16 +267,16 @@ const login = async (req,res) => {
         const findUser = await User.findOne({isAdmin:0,email:email});
 
         if(!findUser){
-            return res.render("login",{message:"User not found"})
+            return res.render("user/login",{message:"User not found"})
         }
 
         if(findUser.isBlocked){
-            return res.render("login",{message:"User is blocked by admin"})
+            return res.render("user/login",{message:"User is blocked by admin"})
         }
 
         const passwordMatch = await bcrypt.compare(password,findUser.password);
         if(!passwordMatch){
-            return res.render("login",{message:"Incorrect Password"})
+            return res.render("user/login",{message:"Incorrect Password"})
         }
 
         req.session.user = findUser._id;
@@ -285,7 +285,7 @@ const login = async (req,res) => {
     } catch (error) {
 
         console.error("login error",error);
-        res.render("login",{message:"Login failed.Please try again later"})
+        res.render("user/login",{message:"Login failed.Please try again later"})
         
     }
     
