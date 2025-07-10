@@ -37,7 +37,7 @@ const productSchema = new Schema({
     language: {
         type: String
     },
-    price: {
+    salePrice: {
         type: Number,
         required: true
     },
