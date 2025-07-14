@@ -84,7 +84,7 @@
     <header class="card-header text-center mb-20">
       <form action="/admin/category/" method="get" class="d-inline">
         <div class="input-group input-group-sm border border-1 border-grey rounded-pill" style="width: 500px; margin-left: 230px">
-          <input type="text" class="form-control border-0 rounded-pill mt-3" placeholder="Search categories" name="search"/>
+          <input type="text" class="form-control border-0 rounded-pill mt-3" placeholder="Search categories" name="search" value="<%= search || '' %>"/>
           <button class="btn" type="submit">Search</button>
         </div>
       </form>
@@ -170,6 +170,8 @@
                     </td>
                     <td class="text-start">
                       <a href="/admin/editCategory?id=<%=category._id%>" class="btn btn-info text-white">Edit</a>
+                      <button onclick="confirmDelete('<%= category._id %>')" class="btn btn-danger text-white ms-2" title="Delete">&#128465;</button>
+
                     </td>
                   </tr>
                   <%})%>
@@ -189,7 +191,7 @@
     <% if (i === currentPage) { %>
       <span class="current-page"><%= i %></span>
     <% } else { %>
-      <a href="?page=<%= i %>"><%= i %></a>
+      <a href="?page=<%= i %><% if (typeof search !== 'undefined') { %>&search=<%= search %><% } %>"><%= i %></a>
     <% } %>
   <% } %>
 
@@ -370,6 +372,44 @@
         }
     }
 
+// confirm deletion
+
+    async function confirmDelete(categoryId) {
+  const result = await Swal.fire({
+    title: 'Are you sure?',
+    text: "This will permanently delete the category.",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Yes, delete it!'
+  });
+
+  if (result.isConfirmed) {
+    try {
+      const response = await fetch('/admin/deleteCategory', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ categoryId })
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.status === true) {
+        Swal.fire('Deleted!', 'Category has been deleted.', 'success').then(() => {
+          location.reload();
+        });
+      } else {
+        Swal.fire('Failed', data.message || 'Failed to delete category.', 'error');
+      }
+    } catch (err) {
+      console.error(err);
+      Swal.fire('Error', 'Something went wrong while deleting.', 'error');
+    }
+  }
+}
 
 
   </script>

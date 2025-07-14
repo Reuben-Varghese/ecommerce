@@ -4,7 +4,7 @@ const {Schema} = mongoose;
 
 
 const productSchema = new Schema({
-    title: {
+    productName: {
         type: String,
         required: true
     },
@@ -45,7 +45,7 @@ const productSchema = new Schema({
         type: Number,
         required: true
     },
-    pdoductImage: {
+    productImage: {
         type: [String],
         required:true
     },

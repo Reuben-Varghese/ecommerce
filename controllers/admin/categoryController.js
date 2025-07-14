@@ -4,34 +4,40 @@ const Product = require("../../models/productSchema")
 
 
 
-const categoryInfo = async (req,res) => {
+const categoryInfo = async (req, res) => {
     try {
-
         const page = parseInt(req.query.page) || 1;
         const limit = 4;
-        const skip = (page-1)*limit;
-        
-        const categoryData = await Category.find({})
-        .sort({createdAt:-1})
-        .skip(skip)
-        .limit(limit);
+        const skip = (page - 1) * limit;
+        const searchQuery = req.query.search || "";
 
-        const totalCategories = await Category.countDocuments();
+        // Case-insensitive search by category name
+        const query = searchQuery
+            ? { name: { $regex: searchQuery, $options: "i" } }
+            : {};
+
+        const categoryData = await Category.find(query)
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+
+        const totalCategories = await Category.countDocuments(query);
         const totalPages = Math.ceil(totalCategories / limit);
-        res.render("admin/category",{
-            cat:categoryData,
-            currentPage:page,
-            totalPages : totalPages,
-            totalCategories:totalCategories
-        })
-         
-    } catch (error) {
 
+        res.render("admin/category", {
+            cat: categoryData,
+            currentPage: page,
+            totalPages: totalPages,
+            totalCategories: totalCategories,
+            search: req.query.search 
+        });
+
+    } catch (error) {
         console.error(error);
-        res.redirect("/pageerror")
-        
+        res.redirect("/pageerror");
     }
-}
+};
+
 
 
 
@@ -196,6 +202,18 @@ const editCategory = async (req,res) => {
     
 }
 
+//---deleting the category
+const deleteCategory = async (req, res) => {
+  try {
+    const { categoryId } = req.body;
+    await Category.findByIdAndDelete(categoryId);
+    res.json({ status: true });
+  } catch (error) {
+    console.error("Delete error:", error);
+    res.status(500).json({ status: false, message: "Server error" });
+  }
+};
+
 
 
 
@@ -210,4 +228,5 @@ module.exports = {
     getUnlistCategory,
     getEditCategory, 
     editCategory,
+    deleteCategory,
 }
