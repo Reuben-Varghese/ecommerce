@@ -5,6 +5,8 @@ const customerController = require("../controllers/admin/customerController")
 const categoryController = require("../controllers/admin/categoryController")
 const productController = require("../controllers/admin/productController")
 const {userAuth,adminAuth} = require("../middlewares/auth")
+const multer = require("multer");
+const upload = require("../helpers/multer"); 
 // Error management
 router.get("/pageerror",adminController.pageerror);
 // Login management
@@ -29,6 +31,7 @@ router.delete('/deleteCategory',adminAuth,categoryController.deleteCategory);
 // Products Managements
 router.get('/products',adminAuth,productController.getAllProducts);
 router.get('/products/add',adminAuth,productController.getProductAddPage);
+router.post('/products/add',adminAuth,upload.array("image",4),productController.addProducts);
 
 
 

@@ -1,89 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VAR-Books</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VAR-Books</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css"
+    rel="stylesheet"
+  />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    /* Fixed Header */
+    .fixed-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      z-index: 1030;
+    }
+    .fixed-header h1 {
+      font-size: 1.25rem;
+      margin: 0;
+    }
 
-    <link rel="stylesheet" href="/admin-assets/main.css" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
-    <!-- Bootstrap 5 CSS CDN -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    /* Fixed Sidebar */
+    .fixed-sidebar {
+      position: fixed;
+      top: 60px; /* BELOW the header */
+      left: 0;
+      bottom: 0;
+      width: 250px;
+      background-color: #2c3e50;
+      color: #fff;
+      padding: 20px 0;
+      overflow-y: auto;
+    }
+    .fixed-sidebar h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .fixed-sidebar nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .fixed-sidebar nav ul li {
+      margin: 0;
+    }
+    .fixed-sidebar nav ul li a {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 20px;
+      transition: background 0.3s;
+    }
+    .fixed-sidebar nav ul li a:hover,
+    .fixed-sidebar nav ul li a.active {
+      background-color: #3498db;
+    }
 
-   
-   
-  </head>
-  <body>
-    <header class="header d-flex justify-content-between align-items-center shadow-sm px-4 py-3 bg-white mb-3">
-      <h1 class="h4 m-0">Welcome</h1>
-      <div class="user-info d-flex align-items-center gap-2">
-        <i class="bx bx-user fs-4"></i>
-        <a class="btn btn-primary" href="/admin/logout">Logout</a>
-      </div>
+    /* Main content area */
+    main {
+      margin-top: 60px; /* height of header */
+      margin-left: 250px; /* width of sidebar */
+      padding: 20px;
+      background: #f4f6f9;
+      min-height: calc(100vh - 60px);
+    }
 
-      <!-- Toggle button for offcanvas menu (visible only on small screens) -->
-      <button
-        class="btn btn-outline-dark d-md-none"
-        type="button"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#sidebarMenu"
-        aria-controls="sidebarMenu"
-      >
+    /* Small screen adjustments */
+    @media (max-width: 768px) {
+      .fixed-sidebar {
+        display: none;
+      }
+      main {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="fixed-header">
+    <h1>Welcome</h1>
+    <div class="d-flex align-items-center gap-2">
+      <i class="bx bx-user fs-4"></i>
+      <a class="btn btn-primary" href="/admin/logout">Logout</a>
+      <!-- Toggle sidebar button -->
+      <button class="btn btn-outline-dark d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
         ☰ Menu
       </button>
-    </header>
+    </div>
+  </header>
 
- 
-    <div class="container-fluid">
-      <div class="row">
-      <!-- Sidebar -->
-      <aside class="col-md-3 col-lg-2 d-none d-md-block  text-white p-3 sidebar">
-        <h2 class="com">VAR Books</h2>
-        <nav>
-          <ul>
-            <li><a href="/admin/dashboard">Dashboard</a></li>
-            <li><a href="/admin/users">Customers</a></li>
-            <li><a href="/admin/category">Categories</a></li>
-            <li><a href="/admin/products">Books</a></li>
+  <!-- Sidebar (Desktop) -->
+  <aside class="fixed-sidebar">
+    <h2>VAR Books</h2>
+    <nav>
+      <ul>
+        <li><a href="/admin/dashboard">Dashboard</a></li>
+        <li><a href="/admin/users">Customers</a></li>
+        <li><a href="/admin/category">Categories</a></li>
+        <li><a href="/admin/products">Books</a></li>
+        <li><a href="/admin/orders">Orders</a></li>
+        <li><a href="/admin/coupons">Coupons</a></li>
+        <li><a href="/admin/offers">Offers</a></li>
+        <li><a href="/admin/sales">Sales Report</a></li>
+        <li><a href="/admin/messages">Messages</a></li>
+      </ul>
+    </nav>
+  </aside>
 
-            <li><a href="/admin/orders">Orders</a></li>
-            <li><a href="/admin/coupons">Coupons</a></li>
-            <li><a href="/admin/offers">Offers</a></li>
+  <!-- Sidebar (Mobile Offcanvas) -->
+  <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="sidebarMenu">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title">Menu</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="nav flex-column">
+        <li><a href="/admin/dashboard" class="nav-link text-white">Dashboard</a></li>
+        <li><a href="/admin/users" class="nav-link text-white">Customers</a></li>
+        <li><a href="/admin/category" class="nav-link text-white">Categories</a></li>
+        <li><a href="/admin/products" class="nav-link text-white">Books</a></li>
+        <li><a href="/admin/orders" class="nav-link text-white">Orders</a></li>
+        <li><a href="/admin/coupons" class="nav-link text-white">Coupons</a></li>
+        <li><a href="/admin/offers" class="nav-link text-white">Offers</a></li>
+        <li><a href="/admin/sales" class="nav-link text-white">Sales Report</a></li>
+        <li><a href="/admin/messages" class="nav-link text-white">Messages</a></li>
+      </ul>
+    </div>
+  </div>
 
-            <li><a href="/admin/sales">Sales Report</a></li>
-            <li><a href="/admin/messages">Messages</a></li>
-          </ul>
-        </nav>
-        
-      </aside>
+  <!-- Your Main Content Starts Here -->
+  <main>
+    <!-- Put your page content inside this <main> -->
+  </main>
 
-      <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="sidebarMenu">
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title">Menu</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-          <ul class="nav flex-column">
-            <li><a href="/admin">Dashboard</a></li>
-            <li><a href="/admin/customers">Customers</a></li>
-            <li><a href="/admin/categories">Categories</a></li>
-            <li><a href="/admin/products">Books</a></li>
-
-            <li><a href="/admin/orders">Orders</a></li>
-            <li><a href="/admin/coupons">Coupons</a></li>
-            <li><a href="/admin/offers">Offers</a></li>
-
-            <li><a href="/admin/sales">Sales Report</a></li>
-            
-          </ul>
-        </div>
-      </div>
-
-      <!-- Main Content -->
-      <main class="col-md-9 ms-sm-auto col-lg-10 px-4 py-4">
-        <!-- Header -->
-        
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

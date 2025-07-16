@@ -16,21 +16,21 @@ const productSchema = new Schema({
         type: String,
         required: true
     },
-    binding: {
-        type: String,
-        required: true
-    },
-    publishingDate: {
-        type: Date,
-        required: true
-    },
-    publisher: {
-        type: String,
-        required: true
-    },
-    edition: {
-        type: String
-    },
+    // binding: {
+    //     type: String,
+    //     required: true
+    // },
+    // publishingDate: {
+    //     type: Date,
+    //     required: true
+    // },
+    // publisher: {
+    //     type: String,
+    //     required: true
+    // },
+    // edition: {
+    //     type: String
+    // },
     pages: {
         type: Number
     },
@@ -41,10 +41,10 @@ const productSchema = new Schema({
         type: Number,
         required: true
     },
-    stock: {
-        type: Number,
-        required: true
-    },
+    // stock: {
+    //     type: Number,
+    //     required: true
+    // },
     productImage: {
         type: [String],
         required:true
