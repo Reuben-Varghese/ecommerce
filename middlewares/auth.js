@@ -7,7 +7,13 @@ const userAuth = (req,res,next)=>{
             if(data && !data.isBlocked){
                 next();
             }else{
-                res.redirect("/login")
+                 req.session.destroy((err)=>{
+            if(err){
+                console.log("Session destruction error",err.message);
+                return res.redirect("/pageNotFound");
+            }
+            return res.redirect("/login")
+        })
             }
         })
         .catch(error=>{
@@ -18,8 +24,6 @@ const userAuth = (req,res,next)=>{
         res.redirect("/login")
     }
 }
-
-
 
 
 const adminAuth = (req,res,next)=>{
@@ -36,7 +40,6 @@ const adminAuth = (req,res,next)=>{
         res.status(500).send("Internal Server Error")
     })
 }
-
 
 
 module.exports={

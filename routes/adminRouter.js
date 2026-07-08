@@ -32,6 +32,10 @@ router.delete('/deleteCategory',adminAuth,categoryController.deleteCategory);
 router.get('/products',adminAuth,productController.getAllProducts);
 router.get('/products/add',adminAuth,productController.getProductAddPage);
 router.post('/products/add',adminAuth,upload.array("image",4),productController.addProducts);
+router.post('/addProductOffer',adminAuth,productController.addProductOffer);
+router.post('/removeProductOffer',adminAuth,productController.removeProductOffer);
+
+
 
 
 

@@ -17,7 +17,7 @@ const categoryInfo = async (req, res) => {
             : {};
 
         const categoryData = await Category.find(query)
-            .sort({ createdAt: -1 })
+            .sort({ _id: -1 })
             .skip(skip)
             .limit(limit);
 

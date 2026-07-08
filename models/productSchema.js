@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
-const {Schema} = mongoose;
-
-
+const { Schema } = mongoose;
 
 const productSchema = new Schema({
     productName: {
@@ -37,41 +35,59 @@ const productSchema = new Schema({
     language: {
         type: String
     },
+    regularPrice: {
+        type: Number,
+        required: true
+    },
+
     salePrice: {
         type: Number,
         required: true
     },
-    // stock: {
-    //     type: Number,
-    //     required: true
-    // },
+    quantity: {
+        type: Number,
+        required: true,
+        default: 0,
+        min: 0
+    },
+
     productImage: {
         type: [String],
-        required:true
+        required: true
     },
     description: {
         type: String,
         required: true
     },
-    offer: {
-        type: Schema.Types.ObjectId,
-        ref: 'Offer'
+    productOffer: {
+        type: Number,
+        default: 0,
+        min: 0,
+        max: 100
     },
+
     category: {
         type: Schema.Types.ObjectId,
         ref: 'Category',
-        required:true
+        required: true
     },
-    status:{
-        type : String,
-        enum :["Available","Out of stock","Discontinued"],
-        required:true,
-        default:"Available"
+    status: {
+        type: String,
+        enum: ["Available", "Out of stock", "Discontinued"],
+        required: true,
+        default: "Available"
     },
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },
+    deletedAt: {
+        type: Date,
+        default: null
+    }
 
-},{timestamps:true});
-
+}, { timestamps: true });
 
 const Product = mongoose.model('Product', productSchema);
 
-module.exports = Product
+module.exports = Product;

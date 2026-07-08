@@ -1,5 +1,7 @@
 
 const User = require("../../models/userSchema");
+const Product = require("../../models/productSchema")
+const Category = require("../../models/categorySchema")
 const env = require("dotenv").config();
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
@@ -65,7 +67,7 @@ const  loadHomepage = async (req,res)=>{
         const user = req.session.user;
         if(user){
 
-            const userData = await User.findOne({_id:user._id});
+            const userData = await User.findOne({_id:user});
             res.render("user/home",{user:userData})
 
         }else{
@@ -79,6 +81,48 @@ const  loadHomepage = async (req,res)=>{
         
     }
 }
+
+
+const getAllProducts = async (req, res) => {
+    try {
+        const search = req.query.search || "";
+        const page = parseInt(req.query.page) || 1;
+        const limit = 4;
+
+        // const searchQuery = {
+        //     $or: [
+        //         { productName: { $regex: new RegExp(".*" + search + ".*", "i") } },
+        //         { author: { $regex: new RegExp(".*" + search + ".*", "i") } },
+        //     ],
+        // };
+
+        const productData = await Product.find()
+            .sort({_id:-1})
+            .limit(limit)
+            .skip((page - 1) * limit)
+            .populate("category")
+            .exec();
+
+        // const count = await Product.countDocuments(searchQuery);
+        const category = await Category.find({ isListed: true });
+
+        if (category && category.length > 0) {
+            res.render("user/home", {
+                data: productData,
+                currentPage: page,
+                // totalPages: Math.ceil(count / limit),
+                cat: category,
+            });
+        } else {
+            res.render("user/user-error");
+        }
+    } catch (error) {
+        console.error("Error in getAllProducts:", error.message);
+        res
+            .status(500)
+            .render("user/user-error", { message: "Something went wrong loading products." });
+    }
+};
 
 
 function generateOtp() {
@@ -278,7 +322,6 @@ const login = async (req,res) => {
         if(!passwordMatch){
             return res.render("user/login",{message:"Incorrect Password"})
         }
-
         req.session.user = findUser._id;
         res.redirect("/");
         
@@ -332,6 +375,7 @@ module.exports = {
     pageNotFound,
     loadLogin,
     login,
-    logout
+    logout,
+    getAllProducts
     
 }

@@ -21,6 +21,7 @@ const customerInfo = async (req, res) => {
                 { email: { $regex: ".*" + search + ".*", $options: "i" } },
             ],
         })
+            .sort({ _id: -1 })
             .limit(limit)
             .skip((page - 1) * limit)
             .exec();
@@ -46,35 +47,37 @@ const customerInfo = async (req, res) => {
 };
 
 
-const customerBlocked = async (req,res) => {
+const customerBlocked = async (req, res) => {
     try {
+        const { id, page } = req.query;
 
-        let id = req.query.id;
-        await User.updateOne({_id:id},{$set:{isBlocked:true}})
-        res.redirect("/admin/users")
-        
+        await User.updateOne(
+            { _id: id },
+            { $set: { isBlocked: true } }
+        );
+
+        res.redirect(`/admin/users?page=${page}`);
     } catch (error) {
-
-        res.redirect("/pageerror")
-        
+        res.redirect("/pageerror");
     }
-}
+};
 
 
 
-const customerunBlocked = async (req,res) => {
+const customerunBlocked = async (req, res) => {
     try {
+        const { id, page } = req.query;
 
-        let id = req.query.id;
-        await User.updateOne({_id:id},{$set:{isBlocked:false}});
-        res.redirect("/admin/users")
-        
+        await User.updateOne(
+            { _id: id },
+            { $set: { isBlocked: false } }
+        );
+
+        res.redirect(`/admin/users?page=${page}`);
     } catch (error) {
-
-        res.redirect("/pageerror")
-        
-    }  
-}
+        res.redirect("/pageerror");
+    }
+};
 
 
 

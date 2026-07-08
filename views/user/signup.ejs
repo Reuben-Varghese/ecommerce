@@ -74,21 +74,21 @@
         font-size: 1.5rem;
       }
       .spacer {
-        height: 30px; /* Adjust the height as needed */
+        height: 30px;
       }
       .form-group label {
-        font-size: 0.875rem; /* Decrease label size */
+        font-size: 0.875rem;
       }
       .form-control {
-        font-size: 0.875rem; /* Decrease input text size */
-        padding: 0.5rem; /* Decrease padding */
+        font-size: 0.875rem;
+        padding: 0.5rem;
       }
       .btn-primary {
-        padding: 0.5rem 1rem; /* Decrease button padding */
-        font-size: 0.875rem; /* Decrease button text size */
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
       }
       .card-title {
-        font-size: 1.25rem; /* Decrease card title size */
+        font-size: 1.25rem;
       }
       .signup-image .sign-in-link {
         color: #333;
@@ -97,14 +97,22 @@
       .signup-image .sign-in-link:hover {
         color: #ff7f50;
       }
-      .error-message{
-        color:red;
+      .error-message {
+        color: red;
         font-size: 0.75rem;
         display: none;
       }
-
-
-
+      .password-toggle {
+        position: relative;
+      }
+      .password-toggle i {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #888;
+      }
     </style>
   </head>
   <body>
@@ -150,7 +158,7 @@
                     />
                     <div id="error3" class="error-message"></div>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group password-toggle">
                     <label for="password">Password</label>
                     <input
                       type="password"
@@ -159,9 +167,10 @@
                       id="password"
                       placeholder="Password"
                     />
+                    <i class="far fa-eye" id="togglePassword"></i>
                     <div id="error4" class="error-message"></div>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group password-toggle">
                     <label for="confirm-password">Confirm Password</label>
                     <input
                       type="password"
@@ -172,11 +181,11 @@
                     />
                     <div id="error5" class="error-message"></div>
                   </div>
-                  <%if(locals.message && message.length>0){%>
-              <div class="alert alert-danger text-center">
-                <%=message%>
-              </div>
-              <%}%> 
+                  <% if (locals.message && message.length > 0) { %>
+                    <div class="alert alert-danger text-center">
+                      <%= message %>
+                    </div>
+                  <% } %>
                   <div
                     class="d-flex justify-content-between align-items-center"
                   >
@@ -217,8 +226,6 @@
     <%- include("../../views/partials/user/footer") %>
   </body>
 </html>
-
-
 
 <script>
   const nameid = document.getElementById("name");
@@ -322,7 +329,7 @@
         !error4 ||
         !error5 ||
         !signform
-      ) {
+      ) { 
         console.error("One or more elements not found");
       }
 
@@ -336,5 +343,17 @@
         e.preventDefault();
       }
     });
+
+    const togglePassword = document.getElementById("togglePassword");
+    
+
+    togglePassword.addEventListener("click", () => {
+      const type = passid.type === "password" ? "text" : "password";
+      passid.type = type;
+      togglePassword.classList.toggle("fa-eye");
+      togglePassword.classList.toggle("fa-eye-slash");
+    });
+
+  
   });
 </script>
